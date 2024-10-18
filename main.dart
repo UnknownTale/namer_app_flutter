@@ -38,6 +38,10 @@ class MyApp extends StatelessWidget {
 class MyAppState extends ChangeNotifier {
   //State MyAppSate diisi dengan 2 kata random yang di gabung. Kata random tersebut disimpan di variable WordPair
   var current = WordPair.random();
+  void getNext() {
+    current = WordPair.random();
+    notifyListeners();
+  }
 }
 
 //Membuat layout dalam halaman MyHomePage
@@ -55,13 +59,16 @@ class MyHomePage extends StatelessWidget {
           Text('A random AWESOME idea:'),
           Text(appState.current
               .asLowerCase), //Mengambil random yecy dari appState pada variabel WordPair Current, Lalu diubaj menjadi huruf demua dan ditampilkan sebagai teks
-          ElevatedButton( //Membuat button timbul di dalam body
-            onPressed: () { //Fungsi yang dieksekusi ketika button ditekan
-              print('button pressed!'); //Tampilkan teks "button pressed!" diterminal saat button di tekan
+          ElevatedButton(
+            //Membuat button timbul di dalam body
+            onPressed: () {
+              //Fungsi yang dieksekusi ketika button ditekan
+              appState
+                  .getNext(); //Tampilkan teks "button pressed!" diterminal saat button di tekan
             },
-            child: Text('Next'), //Berikan teks "Next" pada button (sebagai child)
+            child:
+                Text('Next'), //Berikan teks "Next" pada button (sebagai child)
           ),
-        
         ],
       ),
     );
