@@ -48,28 +48,54 @@ class MyAppState extends ChangeNotifier {
 class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
+    var appState =
+        context.watch<MyAppState>(); //Widget menggunakan state MyAppState
+    //Di bawah ini adalah kode program untuk menyusun layout
+    var pair = appState
+        .current; //Variabel pair menyimpan kata yang sedang tampil/aktif
 
-    return Scaffold(
-      //Base (canvas) dari layout
-      body: Column(
-        //Di atas Scaffold, ada body. Bodynya diberi kolom
-        children: [
-          //Di dalam kolom, diberi teks
-          Text('A random AWESOME idea:'),
-          Text(appState.current
-              .asLowerCase), //Mengambil random yecy dari appState pada variabel WordPair Current, Lalu diubaj menjadi huruf demua dan ditampilkan sebagai teks
-          ElevatedButton(
-            //Membuat button timbul di dalam body
-            onPressed: () {
-              //Fungsi yang dieksekusi ketika button ditekan
-              appState
-                  .getNext(); //Tampilkan teks "button pressed!" diterminal saat button di tekan
-            },
-            child:
-                Text('Next'), //Berikan teks "Next" pada button (sebagai child)
-          ),
-        ],
+    return Scaffold(//Base (canvas) dari layout
+      body: Center(
+        child: Column(//Di atas Scaffold, ada body. Bodynya diberi kolom
+         mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            //Di dalam kolom, diberi teks
+            BigCard(pair: pair),
+            SizedBox(height: 10), //Mengambil nilai dari variabel pair, Lalu diubah menjadi huruf kecil semua dan ditampilkan sebagai BigCard
+            ElevatedButton(
+              //Membuat button timbul di dalam body
+              onPressed: () {//Fungsi yang dieksekusi ketika button ditekan
+                appState.getNext(); //Tampilkan teks "button pressed!" diterminal saat button di tekan
+              },
+              child:
+                  Text('Next'), //Berikan teks "Next" pada button (sebagai child)
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class BigCard extends StatelessWidget {
+  const BigCard({
+    super.key,
+    required this.pair,
+  });
+
+  final WordPair pair;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final style = theme.textTheme.displayMedium!.copyWith(
+      color: theme.colorScheme.onPrimary,
+    );
+    return Card( //membungkus padding di dalam widget Card
+      color: theme.colorScheme.primary,
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Text(pair.asLowerCase, style: style, semanticsLabel: "${pair.first} ${pair.second}",), //membuat kata menjadi huruf kecil
       ),
     );
   }
